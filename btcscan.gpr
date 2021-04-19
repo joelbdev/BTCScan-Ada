@@ -1,0 +1,47 @@
+with "gnatcoll.gpr";
+with ".\parse_args\parse_args.gpr";
+
+project Btcscan is
+
+   --type Mode_Type is
+   --   ("debug", "optimize");
+   --Mode : Mode_Type := external ("mode", "debug");
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   for Main use ("main.adb", "base58_test.adb",
+                 "p2pkh_test.adb", "p2sh_test.adb",
+                 "wifupk_test.adb", "wifcpk_test.adb",
+                 "bip32_private_test.adb", "bip32_public_test.adb",
+                 "bip38_test.adb");
+
+   package Builder is
+      for Executable ("main.adb") use "BTCScan";
+      for Executable ("base58_test.adb") use "Base58";
+      for Executable ("p2pkh_test.adb") use "P2PKH";
+      for Executable ("p2sh_test.adb") use "P2SH";
+      for Executable ("wifupk_test.adb") use "WIFUPK";
+      for Executable ("wifcpk_test.adb") use "WIFCPK";
+      for Executable ("bip32_private_test.adb") use "BIP32Private";
+      for Executable ("bip32_public_test.adb") use "BIP32Public";
+      for Executable ("bip38_test.adb") use "BIP38";
+      for Switches ("ada") use ("-g");
+   end Builder;
+
+   package Compiler is
+
+      --case Mode is
+
+         --when "debug" =>
+      for Switches ("ada") use ("-g");
+
+         --when "optimize" =>
+         --   for Switches ("ada") use ("-O2");
+      --end case;
+   end Compiler;
+
+   package Linker is
+      for Switches ("ada") use ("-g");
+   end Linker;
+
+end Btcscan;
+
